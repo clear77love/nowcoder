@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.lang.reflect.Member;
 
 @Component
 public class MailClient {
