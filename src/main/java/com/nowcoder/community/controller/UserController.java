@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/user")
@@ -48,6 +49,7 @@ public class UserController {
         return "/site/setting";
     }
 
+    //上传头像
     @RequestMapping(path = "/upload",method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model){
         if(headerImage == null){
@@ -56,9 +58,9 @@ public class UserController {
         }
 
         String fileName = headerImage.getOriginalFilename();
-        String suffix = fileName.substring(fileName.lastIndexOf(".")+1);
-        if(StringUtils.isBlank(suffix)||!suffix.equals("png")||!suffix.equals("jpg")||!suffix.equals("jpeg")){
-            model.addAttribute("error","文件格式不正确");
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        if(StringUtils.isBlank(suffix)||!(suffix.equals(".jpg")||suffix.equals(".jpeg")||suffix.equals(".png"))){
+            model.addAttribute("error","文件格式不正确!");
             return "/site/setting";
         }
 
@@ -82,6 +84,7 @@ public class UserController {
         return "redirect:/index";
     }
 
+    //获取头像
     @RequestMapping(path = "/header/{fileName}",method = RequestMethod.GET)
     public void getHeader(@PathVariable("fileName") String fileName, HttpServletResponse response){
         //服务器存放路径
@@ -103,4 +106,20 @@ public class UserController {
             logger.error("读取头像失败"+e.getMessage());
         }
     }
+
+    //修改密码
+    @RequestMapping(path = "/updatePassword",method = RequestMethod.POST)
+    public String updatePassword(String oldPassword,String newPassword,String passwordAgain,Model model){
+        User user = hostHolder.getUser();
+        Map<String,Object> map = userService.updatePassword(user.getId(),oldPassword,newPassword,passwordAgain);
+        if(map == null || map.isEmpty()){
+            return "redirect:/logout";
+        }else{
+            model.addAttribute("oldPasswordMsg",map.get("oldPasswordMsg"));
+            model.addAttribute("newPasswordMsg",map.get("newPasswordMsg"));
+            model.addAttribute("notMatchMsg",map.get("notMatchMsg"));
+            return "/site/setting";
+        }
+    }
+
 }
