@@ -1,8 +1,10 @@
 package com.nowcoder.community;
 
+import com.nowcoder.community.dao.CommentMapper;
 import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.LoginTicketMapper;
 import com.nowcoder.community.dao.UserMapper;
+import com.nowcoder.community.entity.Comment;
 import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
@@ -26,6 +28,9 @@ public class MapperTests {
 
     @Autowired
     private DiscussPostMapper discussPostMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     @Test
     public void testSelectUser(){
@@ -96,6 +101,47 @@ public class MapperTests {
         loginTicketMapper.updateStatus("abc",1);
         loginTicket = loginTicketMapper.selectByTicket("abc");
         System.out.println(loginTicket);
+    }
+
+    @Test
+    public void testInsertDiscussPost(){
+        DiscussPost discussPost = new DiscussPost();
+        discussPost.setUserId(111);
+        discussPost.setTitle("test");
+        discussPost.setContent("test");
+        discussPost.setType(0);
+        discussPost.setStatus(0);
+        discussPost.setCreateTime(new Date());
+        discussPost.setCommentCount(0);
+        discussPost.setScore(0);
+
+        int res = discussPostMapper.insertDiscussPost(discussPost);
+        System.out.println(res);
+    }
+
+    @Test
+    public void testSelectComment(){
+        List<Comment> list = commentMapper.selectCommentsByEntity(1,280,0,10);
+        for(Comment comment : list){
+            System.out.println(comment);
+        }
+
+        int rows = commentMapper.selectCountByEntity(1,280);
+        System.out.println(rows);
+    }
+
+    @Test
+    public void testInsertComment(){
+        Comment comment = new Comment();
+        comment.setCreateTime(new Date());
+        comment.setStatus(0);
+        comment.setUserId(105);
+        comment.setEntityId(280);
+        comment.setTargetId(0);
+        comment.setContent("你好你好");
+        comment.setEntityType(1);
+        int res = commentMapper.insertComment(comment);
+        System.out.println(res);
     }
 
 }
