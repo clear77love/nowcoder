@@ -47,4 +47,10 @@ public class HomeController {
         return "/index";
     }
 
+    @RequestMapping(path = "/error",method = RequestMethod.GET)
+    //404一般直接跳转错误页面即可,发生500错误可能需要记录日志等操作
+    public String getErrorPage(){
+        return "/error/500";
+    }
+
 }
