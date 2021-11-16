@@ -72,6 +72,7 @@ public class SensitiveFilter {
         TrieNode tempNode = rootNode;
         int begin = 0;
         int end = 0;
+        // sb为返回的过滤后的String
         StringBuilder sb = new StringBuilder();
 
         while(end < text.length()){
