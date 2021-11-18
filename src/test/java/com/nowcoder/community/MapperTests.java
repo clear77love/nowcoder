@@ -2,6 +2,7 @@ package com.nowcoder.community;
 
 import com.nowcoder.community.dao.*;
 import com.nowcoder.community.entity.*;
+import com.nowcoder.community.util.CommunityConstant;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @SpringBootTest
 @ContextConfiguration(classes = CommunityApplication.class)
-public class MapperTests {
+public class MapperTests implements CommunityConstant {
 
     @Autowired
     private LoginTicketMapper loginTicketMapper;
@@ -161,6 +162,21 @@ public class MapperTests {
 
         count = messageMapper.selectLetterUnreadCount(131,"111_131");
         System.out.println(count);
+    }
+
+    @Test
+    public void testSelectNotice(){
+        Message message = messageMapper.selectLatestNotice(111,TOPIC_LIKE);
+        System.out.println("**********************");
+        System.out.println(message);
+        System.out.println("**********************");
+
+        int count = messageMapper.selectNoticeCount(111,TOPIC_LIKE);
+        System.out.println(count);
+
+        int unread = messageMapper.selectNoticeUnreadCount(111,TOPIC_LIKE);
+        System.out.println(unread);
+
     }
 
 }
