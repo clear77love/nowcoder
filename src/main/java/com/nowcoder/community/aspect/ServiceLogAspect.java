@@ -30,6 +30,9 @@ public class ServiceLogAspect {
         //用户[1.2.3.4] 在[xxx]时间 访问了[xxx]功能方法
         //如何得到用户ip,用下面的类得到request
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(attributes==null){
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
         String ip = request.getRemoteHost();
         String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
